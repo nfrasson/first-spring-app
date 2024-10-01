@@ -16,8 +16,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginUserDto loginUserDto) {
-        return this.userService.login(loginUserDto.getEmail(), loginUserDto.getPassword());
+    public void login(@RequestBody LoginUserDto loginUserDto) {
+        this.userService.login(loginUserDto.getEmail(), loginUserDto.getPassword());
     }
 
     @PostMapping("/register")

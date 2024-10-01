@@ -1,5 +1,6 @@
 package br.com.frasson.service;
 
+import br.com.frasson.exception.WrongCredentialsException;
 import br.com.frasson.model.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,18 +16,16 @@ public class UserService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public String login(String email, String password) {
+    public void login(String email, String password) {
         User registeredUser = userRepository.findByEmail(email);
 
         if(registeredUser == null) {
-            return "Email not found";
+            throw new WrongCredentialsException("Email not found");
         }
 
         if(!passwordEncoder.matches(password, registeredUser.getPassword())) {
-            return "Wrong password";
+            throw new WrongCredentialsException("Password incorrect");
         }
-
-        return "Successfully logged in";
     }
 
     public void register(String name, String email, String password) {
